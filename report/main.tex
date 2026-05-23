@@ -1,0 +1,58 @@
+\documentclass[a4paper, 10pt]{article}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[T1]{fontenc}
+\renewcommand*\familydefault{\sfdefault}
+\usepackage{sfmath}
+\usepackage{amsmath}
+
+
+
+
+
+\begin{document}
+
+\noindent \textbf{Individual Interim Report}\\
+\noindent Tahmid Azam (ta549@cam.ac.uk)\\
+\noindent Part IIA Project GG4: \textit{Neural Control with Adaptive State Estimation}\\
+\noindent 22 May 2026
+
+\vspace{1em}
+\hrule
+\vspace{1em}
+
+% definining scope, what is estimation? How do we measure a good estimator?
+
+\section*{Defining the parameter space}
+
+To evaluate the estimator, we want to test its performance across a parameter space. Each parameter in should be: interpretable, communicating a particular characteristic of the behaviour of the LGSSM. A condition is defined by a set of parameters: the matrices defining the LGSSM ($\underline{A}$, $\underline{B}$, $\underline{C}$, $\underline{Q}$, and $\underline{R}$); the duration of the simulation, $T$; the number of trials, $n_\text{trials}$; the input, $u_t$; and the initial state, $x_0$.
+
+We can derive additional parameters from these fundamental parameters. From the shapes of the matrices defining the LGSSM we find: the dimension of the latent states, $n_x$, from the shape of $\underline{A}$, $(n_x, n_x)$; the dimension of the inputs, $n_u$, from the shape of $\underline{B}$, $(n_x, n_u)$; and the dimension of the observations, $n_y$, from the shape of $\underline{C}$, $(n_y, n_x)$. These dimensions form new scalar parameters that we can vary.
+
+We can also derive the spectral radius of $\underline{A}$, $\rho(\underline{A})$, which communicates the stability, stationarity, and memory of the LGSSM.
+
+We can derive the controllability and observability Gramians, $\underline{W}_c$ and $\underline{W}_o$ respectively. We can use the determinant, trace, minimum eigenvalue, and the condition number.
+
+We can derive the input-to-state gain
+
+We can derive the observation gain
+
+We can derive the observation ratio
+
+We can directly vary the signal types and initial conditions.
+
+Analytically generating a set of conditions that vary themselves uniformly across a high dimensional parameter space of these derived quantities would require a large amount of code; instead we propose a strategy to randomise the generated conditions, and keep randomly generating new conditions until the parameter space is effectively traversed. These conditions can then be saved to disk and reused
+
+% Transforming the parameter space from matrices to more interpretable parameters
+
+% How do we sample from this parameter space?
+% Baseline then indepedently vary one axis
+% Test every case, but this explodes, so use LHS?
+
+% defining an evaluation process
+% How can we vary signals? Signal generator module
+% How can we vary noise? vary SNR on a continuum?
+% How can we vary dimensions (high neurone, long duration, lots of timesteps)
+% How can we vary the different matrices?
+
+\end{document}
