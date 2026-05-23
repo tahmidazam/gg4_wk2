@@ -26,10 +26,12 @@ class ConditionLibrary:
         cls,
         *,
         model_sampler: LinearGaussianModelSampler = LinearGaussianModelSampler(),
-        time_steps_sampler: IntegerSampler,
-        trials_sampler: IntegerSampler,
-        x0_sampler: WaveformSampler,
-        input_sampler: WaveformSampler,
+        time_steps_sampler: IntegerSampler = IntegerSampler(
+            low=100, high=2000, log=True
+        ),
+        trials_sampler: IntegerSampler = IntegerSampler(low=1, high=10, log=True),
+        x0_sampler: WaveformSampler = WaveformSampler(),
+        input_sampler: WaveformSampler = WaveformSampler(),
         n_samples: int = 100,
         seed: int | None = None,
     ) -> ConditionLibrary:
