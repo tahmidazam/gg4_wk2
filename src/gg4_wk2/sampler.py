@@ -56,7 +56,7 @@ class LinearGaussianModelSampler(BaseSampler[LinearGaussianModel]):
         for _ in range(self.max_retries):
             n = int(rng.integers(self.state_dim_range[0], self.state_dim_range[1] + 1))
             m = int(rng.integers(self.input_dim_range[0], self.input_dim_range[1] + 1))
-            l = int(rng.integers(self.obs_dim_range[0], self.obs_dim_range[1] + 1))
+            len = int(rng.integers(self.obs_dim_range[0], self.obs_dim_range[1] + 1))
 
             rho = float(rng.uniform(*self.rho_range))
             log_sQ = float(rng.uniform(*self.log_sQ_range))
@@ -69,12 +69,12 @@ class LinearGaussianModelSampler(BaseSampler[LinearGaussianModel]):
             A = (rho / rho_raw) * A_raw
 
             B = rng.standard_normal((n, m))
-            C = rng.standard_normal((l, n))
+            C = rng.standard_normal((len, n))
 
             sQ = 10.0**log_sQ
             sR = 10.0**log_sR
             M_Q = rng.standard_normal((n, n))
-            M_R = rng.standard_normal((l, l))
+            M_R = rng.standard_normal((len, len))
             Q = (sQ**2) * (M_Q @ M_Q.T)
             R = (sR**2) * (M_R @ M_R.T)
 
@@ -89,13 +89,6 @@ class LinearGaussianModelSampler(BaseSampler[LinearGaussianModel]):
 
 
 class IntegerSampler(BaseSampler[int]):
-    """Sample an integer in [low, high], optionally log-uniformly.
-
-    With log=False, sampling is uniform over the inclusive integer range.
-    With log=True, log10 of the value is uniform over [log10(low), log10(high)],
-    then rounded to the nearest integer; low must be >= 1.
-    """
-
     __slots__ = ("low", "high", "log")
 
     def __init__(self, *, low: int, high: int, log: bool = False) -> None:
@@ -191,8 +184,6 @@ class WaveformSampler(BaseSampler[Waveform]):
                 scale=10.0 ** rng.uniform(*self.log_noise_scale_range),
                 seed=int(rng.integers(0, 2**31 - 1)),
             )
-
-        raise ValueError(f"unknown waveform kind: {kind}")
 
     def _channels(self, rng: np.random.Generator, m: int) -> tuple[int, ...]:
         size = int(rng.integers(1, m + 1))

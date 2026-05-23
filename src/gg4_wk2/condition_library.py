@@ -5,6 +5,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 from gg4_wk2.condition import Condition
 from gg4_wk2.sampler import (
@@ -38,35 +39,39 @@ class ConditionLibrary:
         rows: list[dict[str, Any]] = []
         n_dropped = 0
 
-        while len(conditions) < n_samples:
-            try:
-                model = model_sampler.sample(rng)
-                time_steps = time_steps_sampler.sample(rng)
-                trials = trials_sampler.sample(rng)
-                x_0 = x0_sampler.sample(rng, time_steps=1, input_dim=model.state_dim)
-                input = input_sampler.sample(
-                    rng, time_steps=time_steps, input_dim=model.input_dim
-                )
-                cond = Condition(
-                    model=model,
-                    x_0=x_0,
-                    input=input,
-                    time_steps=time_steps,
-                    trials=trials,
-                )
-                row: dict[str, Any] = {
-                    **cond.features,
-                    "state_dim": cond.model.state_dim,
-                    "input_dim": cond.model.input_dim,
-                    "obs_dim": cond.model.obs_dim,
-                    "input_kind": cond.input.KIND.value,
-                }
-            except RuntimeError, ValueError, np.linalg.LinAlgError:
-                n_dropped += 1
-                continue
+        with tqdm(total=n_samples, desc="Generating conditions") as pbar:
+            while len(conditions) < n_samples:
+                try:
+                    model = model_sampler.sample(rng)
+                    time_steps = time_steps_sampler.sample(rng)
+                    trials = trials_sampler.sample(rng)
+                    x_0 = x0_sampler.sample(
+                        rng, time_steps=1, input_dim=model.state_dim
+                    )
+                    input = input_sampler.sample(
+                        rng, time_steps=time_steps, input_dim=model.input_dim
+                    )
+                    cond = Condition(
+                        model=model,
+                        x_0=x_0,
+                        input=input,
+                        time_steps=time_steps,
+                        trials=trials,
+                    )
+                    row: dict[str, Any] = {
+                        **cond.features,
+                        "state_dim": cond.model.state_dim,
+                        "input_dim": cond.model.input_dim,
+                        "obs_dim": cond.model.obs_dim,
+                        "input_kind": cond.input.KIND.value,
+                    }
+                except RuntimeError, ValueError, np.linalg.LinAlgError:
+                    n_dropped += 1
+                    continue
 
-            conditions.append(cond)
-            rows.append(row)
+                conditions.append(cond)
+                rows.append(row)
+                pbar.update(1)
 
         return cls(
             conditions=tuple(conditions),

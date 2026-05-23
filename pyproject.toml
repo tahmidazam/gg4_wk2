@@ -12,6 +12,7 @@ dependencies = [
     "numpy>=2.4.6",
     "pandas>=2.2",
     "scipy>=1.14",
+    "tqdm>=4.67.3",
 ]
 
 [project.scripts]
@@ -20,3 +21,11 @@ gg4-wk2 = "gg4_wk2:main"
 [build-system]
 requires = ["uv_build>=0.11.12,<0.12.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.2.0",
+    "pytest>=9.0.3",
+    "ruff>=0.15.14",
+    "ty>=0.0.39",
+]
