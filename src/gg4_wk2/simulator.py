@@ -68,11 +68,3 @@ class LinearGaussianSimulator(BaseSimulator):
         y = x @ self.model.C.T + v
 
         return x, y
-
-    def __repr__(self) -> str:
-        return (
-            f"LinearGaussianSimulator("
-            f"state_dim={self.model.state_dim}, "
-            f"input_dim={self.model.input_dim}, "
-            f"obs_dim={self.model.obs_dim})"
-        )

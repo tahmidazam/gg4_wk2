@@ -310,7 +310,7 @@ class LinearGaussianModel:
             np.trace(self.C @ self.steady_state_filter_covariance @ self.C.T + self.R)
         )
 
-    SCALAR_PROPERTY_NAMES: tuple[str, ...] = (
+    FEATURE_NAMES: tuple[str, ...] = (
         "spectral_radius_A",
         "spectral_gap_A",
         "dominant_mode_time_constant",
@@ -345,21 +345,5 @@ class LinearGaussianModel:
     )
 
     @property
-    def scalar_properties(self) -> dict[str, float]:
-        return {name: float(getattr(self, name)) for name in self.SCALAR_PROPERTY_NAMES}
-
-    @property
-    def scalar_property_vector(self) -> NDArray[np.float64]:
-        return np.fromiter(
-            (getattr(self, name) for name in self.SCALAR_PROPERTY_NAMES),
-            dtype=np.float64,
-            count=len(self.SCALAR_PROPERTY_NAMES),
-        )
-
-    def __repr__(self) -> str:
-        return (
-            f"LinearGaussianModel("
-            f"state_dim={self.state_dim}, "
-            f"input_dim={self.input_dim}, "
-            f"obs_dim={self.obs_dim})"
-        )
+    def features(self) -> dict[str, float]:
+        return {name: float(getattr(self, name)) for name in self.FEATURE_NAMES}

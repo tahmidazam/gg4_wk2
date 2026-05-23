@@ -22,9 +22,6 @@ class Signal:
             arr = arr.astype(dtype, copy=False)
         return arr
 
-    def __repr__(self) -> str:
-        return f"Signal(T={self.T}, m={self.m}, data=\n{self.data!r})"
-
     def copy(self) -> Signal:
         return Signal(self.T, self.m, self.data.copy())
 
