@@ -25,14 +25,14 @@ class ConditionLibrary:
     def from_samplers(
         cls,
         *,
-        model_sampler: LinearGaussianModelSampler,
+        model_sampler: LinearGaussianModelSampler = LinearGaussianModelSampler(),
         time_steps_sampler: IntegerSampler,
         trials_sampler: IntegerSampler,
         x0_sampler: WaveformSampler,
         input_sampler: WaveformSampler,
-        n_samples: int,
+        n_samples: int = 100,
         seed: int | None = None,
-    ) -> "ConditionLibrary":
+    ) -> ConditionLibrary:
         rng = np.random.default_rng(seed)
 
         conditions: list[Condition] = []
@@ -51,7 +51,7 @@ class ConditionLibrary:
                     input = input_sampler.sample(
                         rng, time_steps=time_steps, input_dim=model.input_dim
                     )
-                    cond = Condition(
+                    condition = Condition(
                         model=model,
                         x_0=x_0,
                         input=input,
@@ -59,17 +59,17 @@ class ConditionLibrary:
                         trials=trials,
                     )
                     row: dict[str, Any] = {
-                        **cond.features,
-                        "state_dim": cond.model.state_dim,
-                        "input_dim": cond.model.input_dim,
-                        "obs_dim": cond.model.obs_dim,
-                        "input_kind": cond.input.KIND.value,
+                        **condition.features,
+                        "state_dim": condition.model.state_dim,
+                        "input_dim": condition.model.input_dim,
+                        "obs_dim": condition.model.obs_dim,
+                        "input_kind": condition.input.KIND.value,
                     }
                 except RuntimeError, ValueError, np.linalg.LinAlgError:
                     n_dropped += 1
                     continue
 
-                conditions.append(cond)
+                conditions.append(condition)
                 rows.append(row)
                 pbar.update(1)
 
