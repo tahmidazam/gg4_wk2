@@ -1,2 +1,3 @@
-def main() -> None:
-    print("Hello from gg4-wk2!")
+from gg4_wk2.evaluation import Evaluator
+
+__all__ = ["Evaluator"]
