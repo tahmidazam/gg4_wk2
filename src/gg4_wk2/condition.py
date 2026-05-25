@@ -69,7 +69,9 @@ class Condition:
         "input_kind_id",
     )
 
-    def run(self, *, seed: int | None = None) -> tuple[NDArray[np.float64], Observations]:
+    def run(
+        self, *, seed: int | None = None
+    ) -> tuple[NDArray[np.float64], Observations]:
         x_0 = self.x_0.to_signal(1, self.model.state_dim).data[0]
         u = self.input.to_signal(self.time_steps, self.model.input_dim).data
         return LinearGaussianSimulator(self.model, seed=seed).run(
