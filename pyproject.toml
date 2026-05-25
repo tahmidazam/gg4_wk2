@@ -1,10 +1,10 @@
 [project]
 name = "gg4-wk2"
 version = "0.1.0"
-description = "Add your description here"
+description = "Code for the individual interim report"
 readme = "README.md"
 authors = [
-    { name = "Tahmid Azam", email = "tahmid_azam@icloud.com" }
+    { name = "Tahmid Azam", email = "ta549@cam.ac.uk" }
 ]
 requires-python = ">=3.14"
 dependencies = [
