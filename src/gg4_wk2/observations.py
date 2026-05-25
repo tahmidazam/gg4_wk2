@@ -7,7 +7,7 @@ from numpy.typing import ArrayLike, NDArray
 
 
 @dataclass(frozen=True, slots=True)
-class Dataset:
+class Observations:
     observations: NDArray[np.float64]
 
     def __init__(self, observations: ArrayLike) -> None:
@@ -57,7 +57,7 @@ class Dataset:
 
     def __repr__(self) -> str:
         return (
-            "Dataset("
+            "Observations("
             f"shape={self.shape}, "
             f"n_trials={self.n_trials}, "
             f"n_timesteps={self.n_timesteps}, "

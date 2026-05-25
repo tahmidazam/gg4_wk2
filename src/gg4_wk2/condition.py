@@ -8,7 +8,7 @@ import numpy as np
 from numpy.typing import NDArray
 from scipy.linalg import solve_discrete_are, solve_discrete_lyapunov
 
-from gg4_wk2.dataset import Dataset
+from gg4_wk2.observations import Observations
 from gg4_wk2.simulator import LinearGaussianModel, LinearGaussianSimulator
 from gg4_wk2.waveform import Waveform
 
@@ -69,7 +69,7 @@ class Condition:
         "input_kind_id",
     )
 
-    def run(self, *, seed: int | None = None) -> tuple[NDArray[np.float64], Dataset]:
+    def run(self, *, seed: int | None = None) -> tuple[NDArray[np.float64], Observations]:
         x_0 = self.x_0.to_signal(1, self.model.state_dim).data[0]
         u = self.input.to_signal(self.time_steps, self.model.input_dim).data
         return LinearGaussianSimulator(self.model, seed=seed).run(

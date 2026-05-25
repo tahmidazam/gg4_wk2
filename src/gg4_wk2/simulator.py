@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
-from gg4_wk2.dataset import Dataset
+from gg4_wk2.observations import Observations
 from gg4_wk2.model import LinearGaussianModel
 from gg4_wk2.validation import (
     assert_shape,
@@ -20,7 +20,7 @@ class BaseSimulator(ABC):
         u: NDArray[np.float64],
         time_steps: int,
         trials: int = 1,
-    ) -> tuple[NDArray[np.float64], Dataset]:
+    ) -> tuple[NDArray[np.float64], Observations]:
         pass
 
 
@@ -42,7 +42,7 @@ class LinearGaussianSimulator(BaseSimulator):
         u: ArrayLike,
         time_steps: int,
         trials: int = 1,
-    ) -> tuple[NDArray[np.float64], Dataset]:
+    ) -> tuple[NDArray[np.float64], Observations]:
         x_0 = np.asarray(x_0, dtype=np.float64)
         u = np.asarray(u, dtype=np.float64)
 
@@ -68,4 +68,4 @@ class LinearGaussianSimulator(BaseSimulator):
 
         y = x @ self.model.C.T + v
 
-        return x, Dataset(y)
+        return x, Observations(y)
