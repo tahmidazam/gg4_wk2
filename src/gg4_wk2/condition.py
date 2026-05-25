@@ -110,7 +110,7 @@ class Condition:
         if dom_lam == 0:
             damping_ratio, oscillation_freq = 1.0, 0.0
         else:
-            s = np.log(dom_lam)
+            s = np.log(complex(dom_lam))
             abs_s = float(np.abs(s))
             damping_ratio = float(-np.real(s) / abs_s) if abs_s != 0 else 1.0
             oscillation_freq = float(np.abs(np.imag(s)))
