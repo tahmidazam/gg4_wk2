@@ -8,3 +8,11 @@ wheels/
 
 # Virtual environments
 .venv
+
+# LaTeX build artifacts
+report/main.aux
+report/main.fdb_latexmk
+report/main.fls
+report/main.log
+report/main.synctex.gz
+report/main.xdv
